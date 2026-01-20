@@ -5,11 +5,11 @@
 // Mapeo de IDs de producto a sus URLs de imagen.
 // Estos paths son CRÍTICOS para que las imágenes se muestren correctamente en el carrito.
 const productImageMap = {
-    '1': '../img/bolso.jpeg',
-    '2': '../img/D_NQ_NP_758447-MLA46975173385_082021-O.webp',
-    '3': '../img/D_Q_NP_2X_882490-MLU77852262960_072024-P.webp',
-    '4': '../img/images (3).jpeg',
-    '5': '../img/D_NQ_NP_692212-MLU70775490991_072023-O.webp'
+    '1': '../img/pantalon1.jpeg',
+    '2': '../img/vestido_animal.jpeg',
+    '3': '../img/chaleco_lino.jpeg',
+    '4': '../img/bolso.jpeg',
+    '5': '../img/cartera_blanca.jpeg'
 };
 
 // Función para mostrar una notificación temporal al usuario.
