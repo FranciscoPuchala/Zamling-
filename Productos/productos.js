@@ -1,28 +1,88 @@
-// Selecciona el botón del carrito
-const cartButton = document.querySelector('.cart-button');
-
-// Función para mostrar una notificación temporal al usuario.
-const showNotification = (message) => {
-    // Crea el elemento de notificación
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.className = 'notification-message';
-    document.body.appendChild(notification);
-
-    // Oculta la notificación después de 2 segundos.
-    setTimeout(() => {
-        notification.classList.add('fade-out');
-        notification.addEventListener('transitionend', () => {
-            notification.remove();
-        });
-    }, 2000);
+// Mapeo de IDs de producto a sus URLs de imagen
+const productImageMap = {
+    '1': '../img/pantalon1.jpeg',
+    '2': '../img/vestido_animal.jpeg',
+    '3': '../img/chaleco_lino.jpeg',
+    '4': '../img/bolso.jpeg',
+    '5': '../img/cartera_blanca.jpeg',
+    '6': '../img/estirado.jpeg',
+    '7': '../img/pantalones.jpeg',
+    '8': '../img/pantalon_jean.jpeg',
 };
 
-// Función para actualizar el contador del carrito en el encabezado.
+// Función para mostrar una notificación temporal al usuario
+const showNotification = (message) => {
+    let notification = document.getElementById('cart-notification');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'cart-notification';
+        notification.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100px) scale(0.9);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+            font-weight: 500;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
+        `;
+        document.body.appendChild(notification);
+    }
+    
+    notification.textContent = message;
+    
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0) scale(1)';
+    }, 10);
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(30px) scale(0.95)';
+    }, 3000);
+};
+
+// Función para actualizar el contador del carrito en el encabezado
 const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
-    cartButton.textContent = `🛒 Carrito (${totalItems})`;
+    const cartButton = document.querySelector('.cart-button');
+
+    if (cartButton) {
+        cartButton.textContent = `🛒 Carrito (${totalItems})`;
+    }
+    return totalItems;
+};
+
+// Función para añadir un producto al carrito en localStorage
+const addToCart = (productId, name, price, imageURL) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productIndex = cart.findIndex(item => item.id === productId);
+
+    if (productIndex > -1) {
+        cart[productIndex].quantity += 1;
+    } else {
+        const newProduct = {
+            id: productId,
+            name: name,
+            price: price, 
+            image: imageURL,
+            quantity: 1,
+        };
+        cart.push(newProduct);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showNotification(`✅ "${name}" añadido al carrito.`); 
+    console.log(`Producto añadido: ${name} (ID: ${productId}, Imagen: ${imageURL})`);
 };
 
 // Función para animar las tarjetas de productos
@@ -60,8 +120,10 @@ const showCategory = (selectedCategory, allCategories) => {
     });
 };
 
-// Lógica para el filtro de categorías
+// Inicialización del DOM
 document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount();
+    
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCategories = document.querySelectorAll('.product-category');
     
@@ -77,15 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const category = button.dataset.category;
             
-            // Remueve la clase 'active' de todos los botones de filtro
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Agrega la clase 'active' al botón seleccionado
             button.classList.add('active');
 
-            // Muestra la categoría con animación
             showCategory(category, productCategories);
             
-            // Scroll suave hacia el contenido
             window.scrollTo({
                 top: document.querySelector('.products-page-main').offsetTop - 100,
                 behavior: 'smooth'
@@ -93,95 +151,87 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica para redirigir a la página de producto
-    const viewProductBtns = document.querySelectorAll('.view-product-btn, .add-to-cart');
-    viewProductBtns.forEach(button => {
+    // Manejar clics en los botones "Añadir al carrito"
+    document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', (event) => {
             event.preventDefault();
-            const productCard = button.closest('.product-card');
+            event.stopPropagation();
 
-            if (!productCard) {
-                console.error("No se encontró la tarjeta de producto.");
-                showNotification("Error: No se puede ver el producto. Inténtalo de nuevo.");
+            const productCard = event.target.closest('.product-card');
+
+            if (productCard) {
+                const productId = productCard.getAttribute('data-id');
+                const productName = productCard.querySelector('h3').textContent.trim();
+                const priceElement = productCard.querySelector('.price').textContent.trim();
+                const productPrice = parseFloat(priceElement.replace('$', '').replace('.', ''));
+                const productImage = productImageMap[productId];
+
+                if (productId && productName && !isNaN(productPrice) && productImage) {
+                    addToCart(productId, productName, productPrice, productImage);
+                } else {
+                    console.error('Error al capturar datos del producto para el carrito:', { productId, productName, productPrice, productImage });
+                }
+            }
+        });
+    });
+
+    // Manejar clics en las tarjetas de producto para redirección
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', (event) => {
+            // No redirigir si se hizo clic en el botón "Añadir al carrito"
+            if (event.target.closest('.add-to-cart')) {
                 return;
             }
 
-            // Recopila los datos del producto
-            const productId = productCard.getAttribute('data-id');
-            const productName = productCard.querySelector('h3').textContent;
-            const productPriceText = productCard.querySelector('.price').textContent;
-            const productPrice = parseFloat(productPriceText.replace('$', '').replace('.', '').replace(',', '.'));
-            
-            let productImage = '';
-            const imgElement = productCard.querySelector('img');
-
-            if (imgElement) {
-                productImage = imgElement.src;
-            } else {
-                if (productId === '1') {
-                    productImage = '../img/iphone-16-pro-max-1_6EFF873F24804524AAB5AAD8389E9913.jpg';
-                } else if (productId === '8') {
-                    productImage = '../img/descarga.avif';
-                } else if (productId === '2') {
-                    productImage = '../img/D_NQ_NP_758447-MLA46975173385_082021-O.webp';
-                } else if (productId === '6') {
-                    productImage = '../img/D_NQ_NP_977736-MLA83571171203_042025-O.webp';
-                } else if (productId === '3') {
-                    productImage = '../img/D_Q_NP_2X_882490-MLU77852262960_072024-P.webp';
-                } else if (productId === '7') {
-                    productImage = '../img/apple-airpods-pro-segunda-generacion.jpg';
-                } else if (productId === '5') {
-                    productImage = '../img/D_NQ_NP_692212-MLU70775490991_072023-O.webp';
-                }
-                
-                if (!productImage) {
-                    productImage = 'https://placehold.co/300x300/CCCCCC/333333?text=Sin+Imagen';
-                }
-            }
+            const productId = card.getAttribute('data-id');
+            const productName = card.querySelector('h3').textContent.trim();
+            const priceElement = card.querySelector('.price').textContent.trim();
+            const productPrice = parseFloat(priceElement.replace('$', '').replace('.', ''));
+            const productImage = productImageMap[productId];
 
             let productDescription;
             let productFeatures;
             
+            // Descripción y características basadas en el ID del producto
             if (productId === "1") { 
-                productDescription = "El iPhone más potente y sofisticado hasta la fecha. Con una pantalla más grande, cámaras de nivel profesional y un rendimiento inigualable.";
-                productFeatures = ["Cámara principal de 50 MP", "Pantalla OLED de 6.7\" con ProMotion", "Batería de larga duración", "Cuerpo de titanio"];
-            } else if (productId === "8") {
-                productDescription = "El iPhone SE combina el chip A15 Bionic, 5G, gran autonomía y un diseño robusto en un solo dispositivo.";
-                productFeatures = ["Chip A15 Bionic", "Conectividad 5G ultrarrápida", "Gran autonomía de batería", "Botón de inicio con Touch ID"];
+                productDescription = "Pantalón jeans de tiro alto elastizado, perfecto para cualquier ocasión con un ajuste cómodo y moderno.";
+                productFeatures = ["Tiro alto", "Material elastizado", "Diseño contemporáneo", "Ajuste perfecto"];
             } else if (productId === "2") {
-                productDescription = "El iPad Pro es el lienzo y el cuaderno más versátiles del mundo.";
-                productFeatures = ["Chip M4 ultrarrápido", "Pantalla Liquid Retina XDR", "Sistema de cámara avanzado"];
-            } else if (productId === "6") {
-                productDescription = "El MacBook Air 15'' es increíblemente fino, potente y perfecto para cualquier tarea.";
-                productFeatures = ["Chip M3", "Pantalla Liquid Retina de 15.3 pulgadas", "Batería de hasta 18 horas"];
+                productDescription = "Vestido con estampado animal print que combina elegancia y estilo salvaje.";
+                productFeatures = ["Estampado animal print", "Diseño elegante", "Tela de calidad premium", "Corte favorecedor"];
             } else if (productId === "3") {
-                productDescription = "El Apple Watch Series 10 te ayuda a mantenerte activo, sano y conectado.";
-                productFeatures = ["Pantalla más grande", "Nuevas funciones de salud", "Detección de accidentes"];
-            } else if (productId === "7") {
-                productDescription = "Los AirPods Pro ofrecen cancelación de ruido, sonido envolvente y un ajuste cómodo.";
-                productFeatures = ["Cancelación activa de ruido", "Modo de sonido ambiente adaptable", "Audio espacial personalizado"];
+                productDescription = "Chaleco de lino fresco y versátil, ideal para crear looks sofisticados.";
+                productFeatures = ["100% lino natural", "Transpirable", "Versátil", "Acabado premium"];
+            } else if (productId === "4") {
+                productDescription = "Cartera tipo baúl con diseño exclusivo que combina funcionalidad y estilo.";
+                productFeatures = ["Diseño tipo baúl", "Múltiples compartimentos", "Material resistente", "Acabado de lujo"];
             } else if (productId === "5") {
-                productDescription = "El Cargador MagSafe simplifica la carga inalámbrica.";
-                productFeatures = ["Carga rápida inalámbrica", "Imanes perfectamente alineados", "Diseño compacto"];
-            } else {
-                productDescription = "Descripción no disponible.";
-                productFeatures = [];
+                productDescription = "Cartera elegante con diseño minimalista, perfecta para cualquier ocasión.";
+                productFeatures = ["Diseño minimalista", "Compacta y funcional", "Material de alta calidad", "Versatilidad garantizada"];
+            }else if (productId === "6") {
+                productDescription = "Cartera elegante con diseño minimalista, perfecta para cualquier ocasión.";
+                productFeatures = ["Diseño minimalista", "Compacta y funcional", "Material de alta calidad", "Versatilidad garantizada"];
+            }  else {
+                productDescription = "Producto de moda contemporánea con la calidad excepcional de Zamlnig.";
+                productFeatures = ["Alta calidad", "Diseño exclusivo", "Estilo contemporáneo"];
             }
+           
             
-            const selectedProduct = {
-                id: productId,
-                name: productName,
-                price: productPrice,
-                image: productImage,
-                description: productDescription,
-                features: productFeatures
-            };
-
-            localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
-            window.location.href = `../Producto/pagina_producto.html`;
+            if (productId && productName && !isNaN(productPrice) && productImage) {
+                const selectedProduct = {
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    description: productDescription,
+                    features: productFeatures
+                };
+                
+                localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
+                window.location.href = `../Producto/pagina_producto.html`;
+            } else {
+                console.error('Error al capturar datos para la redirección a la página de producto.');
+            }
         });
     });
 });
-
-// Llama a la función de actualización del carrito.
-updateCartCount();

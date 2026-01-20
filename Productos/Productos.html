@@ -3,112 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos | iPlace</title>
-    <!-- Enlazando a la hoja de estilos de lujo (gold black.css) -->
+    <title>Productos | Zamlnig</title>
     <link rel="stylesheet" href="productos_style.css">
 </head>
 <body>
     <header>
         <div class="logo">
             <a href="../index.html">
-                <h1 href="">iPlace</h1>
+                <img src="../img/logo.png" alt="Zamlnig Logo">
             </a>
         </div>
         <nav>
              <ul>
-                <li><a href="../index.html" >Inicio</a></li>
-                <li><a href="../Productos/Productos.html" >Productos</a></li>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../Productos/Productos.html">Productos</a></li>
                 <li><a href="../Contacto/contactos.html">Contacto</a></li>
             </ul>
         </nav>
         <div class="search-and-cart">
-            <a href = "../Carrito/pagina_carrito.html" class="cart-button">🛒 Carrito (0)</a>
+            <a href="../Carrito/pagina_carrito.html" class="cart-button">🛒 Carrito (0)</a>
         </div>
     </header>
 
     <main class="products-page-main">
         <div class="products-header">
             <h1>Explora Nuestros Productos</h1>
-            <p>Encuentra la tecnología que se adapta a tu vida, con el diseño y la potencia que solo Apple puede ofrecer.</p>
+            <p>Encuentra la moda que define tu estilo único, con la calidad excepcional que solo Zamlnig puede ofrecer.</p>
         </div>
 
         <!-- Filtros de Categoría -->
         <div class="category-filters">
-            <button class="filter-btn active" data-category="all">Todos</button>
-            <button class="filter-btn" data-category="iphone">iPhone</button>
-            <button class="filter-btn" data-category="ipad">iPad</button>
-            <button class="filter-btn" data-category="mac">Mac</button>
-            <button class="filter-btn" data-category="watch">Watch</button>
-            <button class="filter-btn" data-category="audio">Audio</button>
-            <button class="filter-btn" data-category="accesorios">Accesorios</button>
+            <button class="filter-btn" data-category="all">Todos</button>
+            <button class="filter-btn" data-category="italiana">Linea Italiana</button>
+            <button class="filter-btn" data-category="india">Linea India</button>
+            <button class="filter-btn" data-category="hogar">Decoracion de Hogar</button>
+            <button class="filter-btn" data-category="ciinturones">Ciinturones</button>
+            <button class="filter-btn" data-category="pantalones">Pantalones</button>
+            <button class="filter-btn" data-category="vestidos">Vestidos</button>
+            <button class="filter-btn" data-category="camisas">Camisas</button>
+            <button class="filter-btn" data-category="chalecos">Chalecos</button>
         </div>
 
         <!-- Secciones de Productos -->
-        <!-- Nota: Usamos las clases de producto de gold black.css. Necesitamos un div 'product-image-placeholder' con la clase de imagen correcta. -->
-        <section class="product-category" data-category="iphone">
-            <h2 class="category-title" data-category="iphone">iPhone</h2>
+        <section class="product-category" data-category="italiana">
+            <h2 class="category-title" data-category="italiana">Linea Italiana</h2>
             <div class="product-grid">
-                <div data-id="1" class="product-card" data-category="iphone">
-                    <!-- Se necesita una clase de imagen específica en gold black.css o index.html para que funcione el fondo -->
-                    <div class="product-image-placeholder first-image"></div>
-                    <h3>iPhone 16 Pro Max</h3>
-                    <p class="price">$1.299</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
+                <div data-id="6" class="product-card" data-category="italiana">
+                    <div class="product-image-placeholder six-image"></div>
+                    <h3>Pantalon elastizado</h3>
+                    <p class="price">$998</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
                 </div>
-                <div class="product-card" data-id="8" data-category="iphone">
+                <div data-id="2" class="product-card" data-category="italiana">
                     <div class="product-image-placeholder second-image"></div>
-                    <h3>iPhone SE</h3>
-                    <p class="price">$429</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
+                    <h3>Vestido animal print</h3>
+                    <p class="price">$998</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                </div>
+                <div data-id="7" class="product-card" data-category="italiana">
+                    <div class="product-image-placeholder seven-image"></div>
+                    <h3>Pantalon</h3>
+                    <p class="price">$998</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                </div>
+                <div data-id="8" class="product-card" data-category="italiana">
+                    <div class="product-image-placeholder eight-image"></div>
+                    <h3>Pantalon de jeans </h3>
+                    <p class="price">$998</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="product-category" data-category="pantalones">
+            <h2 class="category-title" data-category="pantalones">Pantalones</h2>
+            <div class="product-grid">
+                <div data-id="1" class="product-card" data-category="pantalones">
+                    <div class="product-image-placeholder first-image"></div>
+                    <h3>Pantalón jeans toro alto elastizado</h3>
+                    <p class="price">$998</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
                 </div>
             </div>
         </section>
 
-        <section class="product-category" data-category="ipad">
-            <h2 class="category-title" data-category="ipad">iPad</h2>
+        <section class="product-category" data-category="vestidos">
+            <h2 class="category-title" data-category="vestidos">Vestidos</h2>
             <div class="product-grid">
-                <div class="product-card" data-id="2" data-category="ipad">
+                <div class="product-card" data-id="2" data-category="vestidos">
+                    <div class="product-image-placeholder second-image"></div>
+                    <h3>Vestido animal print</h3>
+                    <p class="price">$1.598</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="product-category" data-category="chalecos">
+            <h2 class="category-title" data-category="chalecos">Chalecos</h2>
+            <div class="product-grid">
+                <div class="product-card" data-id="3" data-category="chalecos">
                     <div class="product-image-placeholder third-image"></div>
-                    <h3>iPad Pro</h3>
-                    <p class="price">$799</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
-                </div>
-                
-            </div>
-        </section>
-        
-        <section class="product-category" data-category="mac">
-            <h2 class="category-title" data-category="mac">Mac</h2>
-            <div class="product-grid">
-                <div class="product-card" data-id="6" data-category="mac">
-                    <div class="product-image-placeholder fourth-image"></div>
-                    <h3>MacBook Air 15''</h3>
-                    <p class="price">$1299</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
-                </div>
-            </div>
-        </section>
-        
-        <section class="product-category" data-category="watch">
-            <h2 class="category-title" data-category="watch">Apple Watch</h2>
-            <div class="product-grid">
-                <div class="product-card" data-id="3" data-category="watch">
-                    <div class="product-image-placeholder five-image"></div>
-                    <h3>Apple Watch Series 10</h3>
-                    <p class="price">$799</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
-                </div>
-            </div>
-        </section>
-        
-        <section class="product-category" data-category="audio">
-            <h2 class="category-title" data-category="audio">Audio</h2>
-            <div class="product-grid">
-                <div class="product-card" data-id="7" data-category="audio">
-                    <div class="product-image-placeholder six-image"></div>
-                    <h3>AirPods Pro</h3>
-                    <p class="price">$249</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
+                    <h3>Chaleco de lino</h3>
+                    <p class="price">$1.598</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
                 </div>
             </div>
         </section>
@@ -116,21 +114,27 @@
         <section class="product-category" data-category="accesorios">
             <h2 class="category-title" data-category="accesorios">Accesorios</h2>
             <div class="product-grid">
+                <div class="product-card" data-id="4" data-category="accesorios">
+                    <div class="product-image-placeholder fourth-image"></div>
+                    <h3>Cartera tipo baul</h3>
+                    <p class="price">$3.598</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                </div>
                 <div class="product-card" data-id="5" data-category="accesorios">
-                    <div class="product-image-placeholder seven-image"></div>
-                    <h3>Cargador MagSafe</h3>
-                    <p class="price">$39</p>
-                    <a href="../Producto/pagina_producto.html" class="add-to-cart">Ver más</a>
+                    <div class="product-image-placeholder fifth-image"></div>
+                    <h3>Cartera</h3>
+                    <p class="price">$3.298</p>
+                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer id="contacto-footer">
+    <footer id="contacto">
         <div class="footer-content">
             <div class="footer-section about">
                 <h3>Sobre nosotros</h3>
-                <p>iPlace es tu distribuidor oficial de productos Apple, ofreciendo la mejor calidad y servicio al cliente.</p>
+                <p>Zamlnig es tu destino de moda contemporánea, ofreciendo las últimas tendencias con calidad excepcional.</p>
             </div>
             <div class="footer-section links">
                 <h3>Enlaces útiles</h3>
@@ -142,16 +146,15 @@
             </div>
             <div class="footer-section contact">
                 <h3>Contáctanos</h3>
-                <p>Email: info@iplace.com</p>
+                <p>Email: info@zamlnig.com</p>
                 <p>Teléfono: +123 456 7890</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 iPlace. Todos los derechos reservados.</p>
+            <p>&copy; 2025 Zamlnig. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <script src="productos.js">
-    </script>
+    <script src="productos.js"></script>
 </body>
 </html>
