@@ -19,12 +19,12 @@ const showNotification = (message) => {
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'cart-notification';
-        // Añadir estilos básicos con color azul y posición abajo a la derecha
+        // Añadir estilos básicos con color amarillo/naranja y posición abajo a la derecha
         notification.style.cssText = `
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #007bff;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
             color: white;
             padding: 15px 25px;
             border-radius: 12px;
@@ -32,7 +32,7 @@ const showNotification = (message) => {
             opacity: 0;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(100px) scale(0.9);
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
             font-weight: 500;
             font-size: 0.95em;
             backdrop-filter: blur(10px);
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addToCartButton) {
             // Aseguramos que el clic en la tarjeta solo redirija si no es el botón de añadir al carrito
             card.addEventListener('click', (event) => {
-                if (event.target !== addToCartButton) {
+                if (event.target !== addToCartButton && !event.target.closest('.add-to-cart')) {
                     const productId = card.getAttribute('data-id');
                     const productName = card.querySelector('h3').textContent.trim();
                     const priceElement = card.querySelector('.price').textContent.trim();
