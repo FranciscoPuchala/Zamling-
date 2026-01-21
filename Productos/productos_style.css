@@ -557,6 +557,54 @@ nav ul li a:hover::after {
     background-image: url('../img/pantalon_jean.jpeg');
 }
 
+.product-card .nine-image {
+    background-image: url('../img/pantalon_lino.jpeg');
+}
+
+.product-card .ten-image {
+    background-image: url('../img/pantalon_marron.jpeg');
+}
+
+.product-card .eleven-image {
+    background-image: url('../img/pantalon_algodon.jpeg');
+}
+
+.product-card .twelve-image {
+    background-image: url('../img/vestido_prili.jpeg');
+}
+
+.product-card .thirdteen-image {
+    background-image: url('../img/vestido_algodon.jpeg');
+}
+
+.product-card .fourteen-image {
+    background-image: url('../img/vestido2.jpeg');
+}
+
+.product-card .fifteen-image {
+    background-image: url('../img/Remera_italiana.jpeg');
+}
+
+.product-card .sixteen-image {
+    background-image: url('../img/remera_lino.jpeg');
+}
+
+.product-card .seventeen-image {
+    background-image: url('../img/remera_algo_lino.jpeg');
+}
+
+.product-card .eightteen-image {
+    background-image: url('../img/remera_italiana2.jpeg');
+}
+
+.product-card .nineteen-image {
+    background-image: url('../img/cinturon.jpeg');
+}
+
+.product-card .twenty-image {
+    background-image: url('../img/mini_cartera.jpeg');
+}
+
 
 .product-card img {
     display: none;

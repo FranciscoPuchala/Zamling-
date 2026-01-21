@@ -8,6 +8,19 @@ const productImageMap = {
     '6': '../img/estirado.jpeg',
     '7': '../img/pantalones.jpeg',
     '8': '../img/pantalon_jean.jpeg',
+    '9': '../img/pantalon_lino.jpeg',
+    '10': '../img/pantalon_marron.jpeg',
+    '11': '../img/pantalon_algodon.jpeg',
+    '12': '../img/vestido_prili.jpeg',
+    '13': '../img/vestido_algodon.jpeg',
+    '14': '../img/vestido2.jpeg',
+    '15': '../img/Remera_italiana.jpeg',
+    '16': '../img/remera_lino.jpeg',
+    '17': '../img/remera_algo_lino.jpeg',
+    '18': '../img/remera_italiana2.jpeg',
+    '19': '../img/cinturon.jpeg',
+    '20': '../img/mini_cartera.jpeg',
+
 };
 
 // Función para mostrar una notificación temporal al usuario
