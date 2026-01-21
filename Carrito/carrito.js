@@ -9,11 +9,38 @@ const showNotification = (message) => {
     const notification = document.createElement('div');
     notification.textContent = message;
     notification.className = 'notification-message';
+    
+    // Estilos de la notificación con la nueva paleta de colores
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+        color: #fff;
+        padding: 18px 30px;
+        border-radius: 15px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(100px) scale(0.9);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+        font-weight: 600;
+        font-size: 1em;
+        backdrop-filter: blur(10px);
+    `;
+    
     document.body.appendChild(notification);
-
-    // Oculta la notificación después de 2 segundos.
+    
+    // Anima la entrada de la notificación
     setTimeout(() => {
-        notification.classList.add('fade-out');
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0) scale(1)';
+    }, 10);
+
+    // Oculta la notificación después de 2 segundos
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(50px) scale(0.95)';
         notification.addEventListener('transitionend', () => {
             notification.remove();
         });
@@ -65,17 +92,15 @@ const renderCartItems = () => {
         });
     }
 
-    // **NUEVA LÓGICA:** El Total es igual al Subtotal (sin impuestos)
+    // El Total es igual al Subtotal (sin impuestos)
     const total = subtotal; 
     
     // Guarda el Subtotal/Total unificado en localStorage
     localStorage.setItem('checkoutTotal', total.toFixed(2));
 
-
     // Actualiza los elementos del resumen del carrito en el DOM
     subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
     totalElement.textContent = `$${total.toFixed(2)}`;
-
 
     // Asigna los eventos a los botones de eliminar después de renderizar los elementos
     const removeButtons = document.querySelectorAll('.remove-item');
@@ -90,6 +115,9 @@ const renderCartItems = () => {
             
             // Guarda el carrito modificado
             localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Muestra notificación
+            showNotification('✓ Producto eliminado del carrito');
             
             // Vuelve a renderizar la lista del carrito y actualiza el contador del carrito en la interfaz
             renderCartItems();
@@ -113,6 +141,10 @@ const renderCartItems = () => {
                     // Actualiza la cantidad y guarda el carrito
                     cart[productIndex].quantity = newQuantity;
                     localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    // Muestra notificación
+                    showNotification('✓ Cantidad actualizada');
+                    
                     // Vuelve a renderizar la lista del carrito y actualiza el contador
                     renderCartItems();
                     updateCartCount();

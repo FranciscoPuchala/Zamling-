@@ -10,33 +10,39 @@ const showNotification = (message) => {
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'cart-notification';
-        // Añadir estilos básicos para que sea visible (deberías complementarlo con CSS)
+        // Estilos actualizados con la paleta de colores de Zamlnig
         notification.style.cssText = `
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 15px 25px;
+            border-radius: 12px;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.5s, transform 0.5s;
-            transform: translateY(-50px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100px) scale(0.9);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+            font-weight: 500;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
         `;
         document.body.appendChild(notification);
     }
     
     // Actualizar mensaje y mostrar
     notification.textContent = message;
-    notification.style.opacity = '1';
-    notification.style.transform = 'translateY(0)';
+    
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0) scale(1)';
+    }, 10);
 
     // Ocultar la notificación después de 3 segundos
     setTimeout(() => {
         notification.style.opacity = '0';
-        notification.style.transform = 'translateY(-50px)';
+        notification.style.transform = 'translateY(30px) scale(0.95)';
     }, 3000);
 };
 
@@ -95,7 +101,7 @@ const renderProductDetails = (selectedProduct) => {
 
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            showNotification(`${selectedProduct.name} ha sido añadido al carrito.`);
+            showNotification(`✅ "${selectedProduct.name}" añadido al carrito.`);
         });
     }
 };
@@ -124,6 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProductDetails(selectedProduct);
     } else {
         // Si no se encontró un producto, muestra un mensaje de error.
-        productDetailSection.innerHTML = `<p>Producto no encontrado. Por favor, vuelve a la <a href="../Inicio/pagina_inicio.html">página de inicio</a>.</p>`;
+        productDetailSection.innerHTML = `<p>Producto no encontrado. Por favor, vuelve a la <a href="../Productos/Productos.html">página de productos</a>.</p>`;
     }
 });
