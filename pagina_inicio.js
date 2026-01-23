@@ -1,6 +1,7 @@
 // Archivo: pagina_inicio.js
 // Este script maneja la lógica de añadir productos al carrito desde la página de inicio, 
 // asegurando que se guarden todos los datos necesarios, incluyendo la imagen, para el carrito.
+// También maneja la funcionalidad del menú hamburguesa para móviles.
 
 // Mapeo de IDs de producto a sus URLs de imagen.
 // Estos paths son CRÍTICOS para que las imágenes se muestren correctamente en el carrito.
@@ -97,15 +98,52 @@ const addToCart = (productId, name, price, imageURL) => {
     console.log(`Producto añadido: ${name} (ID: ${productId}, Imagen: ${imageURL})`);
 };
 
+// ============================================
+// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// ============================================
+const initHamburgerMenu = () => {
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const nav = document.getElementById('main-nav');
+
+    if (hamburgerButton && nav) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle clases activas
+            hamburgerButton.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnHamburger = hamburgerButton.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
+    }
+};
 
 // Inicializa los listeners de los botones "Añadir al carrito" y los productos
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount(); // Inicializa el contador al cargar la página
+    initHamburgerMenu(); // Inicializa el menú hamburguesa
 
     // 1. Manejar clics en los botones "Añadir al carrito"
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', (event) => {
             event.preventDefault(); // Detiene la navegación del enlace
+            event.stopPropagation(); // Evita que el clic se propague a la tarjeta
 
             const productCard = event.target.closest('.product-card');
 
@@ -127,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     addToCart(productId, productName, productPrice, productImage);
                 } else {
                     console.error('Error al capturar datos del producto para el carrito:', { productId, productName, productPrice, productImage });
-                    // NOTA: Se evita el alert aquí ya que la notificación es mejor.
                 }
             }
         });
@@ -147,14 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productPrice = parseFloat(priceElement.replace('$', ''));
                     const productImage = productImageMap[productId];
 
-                    // Prepara y guarda la información del producto seleccionado (como lo hacía tu script original)
+                    // Prepara y guarda la información del producto seleccionado
                     if (productId && productName && !isNaN(productPrice) && productImage) {
                         const selectedProduct = {
                             id: productId,
                             name: productName,
                             price: productPrice,
                             image: productImage,
-                            // Nota: La descripción y características deben ser añadidas aquí si se usan en la página de producto
                             description: "Descripción genérica...", 
                             features: ["Función 1", "Función 2"]
                         };

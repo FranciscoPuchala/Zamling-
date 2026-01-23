@@ -20,7 +20,6 @@ const productImageMap = {
     '18': '../img/remera_italiana2.jpeg',
     '19': '../img/cinturon.jpeg',
     '20': '../img/mini_cartera.jpeg',
-
 };
 
 // Función para mostrar una notificación temporal al usuario
@@ -133,9 +132,46 @@ const showCategory = (selectedCategory, allCategories) => {
     });
 };
 
+// ============================================
+// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// ============================================
+const initHamburgerMenu = () => {
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const nav = document.getElementById('main-nav');
+
+    if (hamburgerButton && nav) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle clases activas
+            hamburgerButton.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnHamburger = hamburgerButton.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
+    }
+};
+
 // Inicialización del DOM
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
+    initHamburgerMenu(); // Inicializa el menú hamburguesa
     
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCategories = document.querySelectorAll('.product-category');
@@ -221,14 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (productId === "5") {
                 productDescription = "Cartera elegante con diseño minimalista, perfecta para cualquier ocasión.";
                 productFeatures = ["Diseño minimalista", "Compacta y funcional", "Material de alta calidad", "Versatilidad garantizada"];
-            }else if (productId === "6") {
-                productDescription = "Cartera elegante con diseño minimalista, perfecta para cualquier ocasión.";
-                productFeatures = ["Diseño minimalista", "Compacta y funcional", "Material de alta calidad", "Versatilidad garantizada"];
-            }  else {
+            } else if (productId === "6") {
+                productDescription = "Pantalón elastizado de corte moderno, ideal para el día a día.";
+                productFeatures = ["Material elastizado", "Corte moderno", "Máxima comodidad", "Diseño versátil"];
+            } else {
                 productDescription = "Producto de moda contemporánea con la calidad excepcional de Zamlnig.";
                 productFeatures = ["Alta calidad", "Diseño exclusivo", "Estilo contemporáneo"];
             }
-           
             
             if (productId && productName && !isNaN(productPrice) && productImage) {
                 const selectedProduct = {

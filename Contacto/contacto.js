@@ -57,10 +57,49 @@ const simulateSupportResponse = () => {
     }, 1500);
 };
 
+// ============================================
+// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// ============================================
+const initHamburgerMenu = () => {
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const nav = document.getElementById('main-nav');
+
+    if (hamburgerButton && nav) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle clases activas
+            hamburgerButton.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnHamburger = hamburgerButton.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
+    }
+};
+
 // Inicialización del DOM
 document.addEventListener('DOMContentLoaded', () => {
     // Actualizar contador del carrito al cargar
     updateCartCount();
+    
+    // Inicializar menú hamburguesa
+    initHamburgerMenu();
     
     // Referencias a elementos del chat
     const startChatBtn = document.getElementById('start-chat-btn');

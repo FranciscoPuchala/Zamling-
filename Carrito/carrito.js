@@ -158,12 +158,50 @@ const renderCartItems = () => {
     });
 };
 
+// ============================================
+// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// ============================================
+const initHamburgerMenu = () => {
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const nav = document.getElementById('main-nav');
+
+    if (hamburgerButton && nav) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle clases activas
+            hamburgerButton.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnHamburger = hamburgerButton.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
+    }
+};
+
 // Se ejecuta al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
     // Renderiza los productos al cargar la página
     renderCartItems();
     // Actualiza el contador del carrito
     updateCartCount();
+    // Inicializa el menú hamburguesa
+    initHamburgerMenu();
 });
 
 document.querySelector('.checkout-button').addEventListener('click', function() {

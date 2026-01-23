@@ -106,6 +106,42 @@ const renderProductDetails = (selectedProduct) => {
     }
 };
 
+// ============================================
+// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// ============================================
+const initHamburgerMenu = () => {
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const nav = document.getElementById('main-nav');
+
+    if (hamburgerButton && nav) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle clases activas
+            hamburgerButton.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickOnHamburger = hamburgerButton.contains(event.target);
+
+            if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                hamburgerButton.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
+    }
+};
+
 // Inicializa la página al cargar el DOM.
 document.addEventListener('DOMContentLoaded', () => {
     // Selecciona el elemento de imagen para asegurarse de que exista antes de intentar usarlo.
@@ -122,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateCartCount();
+    initHamburgerMenu(); // Inicializa el menú hamburguesa
 
     // Obtiene el producto seleccionado de localStorage (guardado desde la página de inicio).
     const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct'));
