@@ -1,16 +1,16 @@
-// Selecciona los elementos del DOM que vamos a usar
+// Select the DOM elements we will use
 const cartContainer = document.getElementById('cart-container');
 const subtotalElement = document.getElementById('subtotal-price');
 const totalElement = document.getElementById('total-price');
 const cartButton = document.querySelector('.cart-button');
 
-// Función para mostrar una notificación temporal al usuario.
+// Function to show a temporary notification to the user.
 const showNotification = (message) => {
     const notification = document.createElement('div');
     notification.textContent = message;
     notification.className = 'notification-message';
-    
-    // Estilos de la notificación con la nueva paleta de colores
+
+    // Notification styles
     notification.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -28,16 +28,16 @@ const showNotification = (message) => {
         font-size: 1em;
         backdrop-filter: blur(10px);
     `;
-    
+
     document.body.appendChild(notification);
-    
-    // Anima la entrada de la notificación
+
+    // Animate the notification entrance
     setTimeout(() => {
         notification.style.opacity = '1';
         notification.style.transform = 'translateY(0) scale(1)';
     }, 10);
 
-    // Oculta la notificación después de 2 segundos
+    // Hide the notification after 2 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(50px) scale(0.95)';
@@ -47,34 +47,34 @@ const showNotification = (message) => {
     }, 2000);
 };
 
-// Función para actualizar el contador del carrito en el encabezado.
+// Function to update the cart counter in the header.
 const updateCartCount = () => {
-    // Obtiene el carrito de localStorage; si no existe, usa un array vacío.
+    // Get the cart from localStorage; if it doesn't exist, use an empty array.
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    // Calcula el total de artículos sumando las cantidades de cada producto.
+    // Calculate the total items by summing the quantities of each product.
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
-    // Actualiza el texto del botón del carrito con el nuevo total.
-    cartButton.textContent = `🛒 Carrito (${totalItems})`;
+    // Update the cart button text with the new total.
+    cartButton.textContent = `🛒 Cart (${totalItems})`;
 };
 
-// Función para renderizar los productos del carrito y actualizar el resumen
+// Function to render cart products and update the summary
 const renderCartItems = () => {
     cartContainer.innerHTML = '';
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     let subtotal = 0;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = '<p class="empty-cart-message">Tu carrito está vacío.</p>';
+        cartContainer.innerHTML = '<p class="empty-cart-message">Your cart is empty.</p>';
     } else {
         cart.forEach(product => {
-            // Calcular el subtotal del carrito
+            // Calculate the cart subtotal
             subtotal += product.price * product.quantity;
 
             const cartItemDiv = document.createElement('div');
             cartItemDiv.classList.add('cart-item');
             cartItemDiv.setAttribute('data-id', product.id);
-            
-            // Crea el HTML para cada artículo del carrito
+
+            // Create the HTML for each cart item
             cartItemDiv.innerHTML = `
                 <div class="item-info">
                     <img src="${product.image}" alt="${product.name}">
@@ -85,47 +85,47 @@ const renderCartItems = () => {
                 </div>
                 <div class="item-actions">
                     <input type="number" class="item-quantity" value="${product.quantity}" min="1">
-                    <button class="remove-item">Eliminar</button>
+                    <button class="remove-item">Remove</button>
                 </div>
             `;
             cartContainer.appendChild(cartItemDiv);
         });
     }
 
-    // El Total es igual al Subtotal (sin impuestos)
-    const total = subtotal; 
-    
-    // Guarda el Subtotal/Total unificado en localStorage
+    // Total equals Subtotal (no taxes)
+    const total = subtotal;
+
+    // Save the unified Subtotal/Total to localStorage
     localStorage.setItem('checkoutTotal', total.toFixed(2));
 
-    // Actualiza los elementos del resumen del carrito en el DOM
+    // Update the cart summary elements in the DOM
     subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
     totalElement.textContent = `$${total.toFixed(2)}`;
 
-    // Asigna los eventos a los botones de eliminar después de renderizar los elementos
+    // Assign events to the remove buttons after rendering the elements
     const removeButtons = document.querySelectorAll('.remove-item');
     removeButtons.forEach(button => {
         button.addEventListener('click', () => {
             const productCard = button.closest('.cart-item');
             const productId = productCard.getAttribute('data-id');
-            
-            // Filtra el carrito para eliminar el producto seleccionado
+
+            // Filter the cart to remove the selected product
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             cart = cart.filter(item => item.id !== productId);
-            
-            // Guarda el carrito modificado
+
+            // Save the modified cart
             localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Muestra notificación
-            showNotification('✓ Producto eliminado del carrito');
-            
-            // Vuelve a renderizar la lista del carrito y actualiza el contador del carrito en la interfaz
+
+            // Show notification
+            showNotification('✓ Product removed from cart');
+
+            // Re-render the cart list and update the cart counter in the UI
             renderCartItems();
             updateCartCount();
         });
     });
 
-    // Asigna el evento de cambio a los campos de cantidad
+    // Assign change event to quantity input fields
     const quantityInputs = document.querySelectorAll('.item-quantity');
     quantityInputs.forEach(input => {
         input.addEventListener('change', (event) => {
@@ -138,19 +138,19 @@ const renderCartItems = () => {
                 const productIndex = cart.findIndex(item => item.id === productId);
 
                 if (productIndex > -1) {
-                    // Actualiza la cantidad y guarda el carrito
+                    // Update the quantity and save the cart
                     cart[productIndex].quantity = newQuantity;
                     localStorage.setItem('cart', JSON.stringify(cart));
-                    
-                    // Muestra notificación
-                    showNotification('✓ Cantidad actualizada');
-                    
-                    // Vuelve a renderizar la lista del carrito y actualiza el contador
+
+                    // Show notification
+                    showNotification('✓ Quantity updated');
+
+                    // Re-render the cart list and update the counter
                     renderCartItems();
                     updateCartCount();
                 }
             } else {
-                // Si la cantidad es 0, elimina el producto
+                // If quantity is 0, remove the product
                 const removeButton = productCard.querySelector('.remove-item');
                 removeButton.click();
             }
@@ -159,7 +159,7 @@ const renderCartItems = () => {
 };
 
 // ============================================
-// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// HAMBURGER MENU FUNCTIONALITY
 // ============================================
 const initHamburgerMenu = () => {
     const hamburgerButton = document.getElementById('hamburger-menu');
@@ -167,12 +167,12 @@ const initHamburgerMenu = () => {
 
     if (hamburgerButton && nav) {
         hamburgerButton.addEventListener('click', () => {
-            // Toggle clases activas
+            // Toggle active classes
             hamburgerButton.classList.toggle('active');
             nav.classList.toggle('active');
         });
 
-        // Cerrar menú al hacer clic en un enlace
+        // Close menu when a link is clicked
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -181,7 +181,7 @@ const initHamburgerMenu = () => {
             });
         });
 
-        // Cerrar menú al hacer clic fuera de él
+        // Close menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideNav = nav.contains(event.target);
             const isClickOnHamburger = hamburgerButton.contains(event.target);
@@ -194,13 +194,13 @@ const initHamburgerMenu = () => {
     }
 };
 
-// Se ejecuta al cargar la página
+// Runs on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Renderiza los productos al cargar la página
+    // Render products on page load
     renderCartItems();
-    // Actualiza el contador del carrito
+    // Update cart counter
     updateCartCount();
-    // Inicializa el menú hamburguesa
+    // Initialize hamburger menu
     initHamburgerMenu();
 });
 

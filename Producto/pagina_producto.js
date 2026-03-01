@@ -1,16 +1,16 @@
-// Selecciona los elementos del DOM necesarios.
+// Select the necessary DOM elements.
 const productDetailSection = document.getElementById('product-details-container');
 const cartButton = document.querySelector('.cart-button');
-const productImageElement = document.getElementById('product-image'); // Elemento de imagen
+const productImageElement = document.getElementById('product-image'); // Image element
 
-// Función para mostrar una notificación temporal al usuario.
+// Function to show a temporary notification to the user.
 const showNotification = (message) => {
-    // Intenta encontrar un contenedor de notificación existente o crea uno
+    // Try to find an existing notification container or create one
     let notification = document.getElementById('cart-notification');
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'cart-notification';
-        // Estilos actualizados con la paleta de colores de Zamlnig
+        // Styles updated with the Velour & Co. color palette
         notification.style.cssText = `
             position: fixed;
             bottom: 20px;
@@ -30,59 +30,59 @@ const showNotification = (message) => {
         `;
         document.body.appendChild(notification);
     }
-    
-    // Actualizar mensaje y mostrar
+
+    // Update message and show
     notification.textContent = message;
-    
+
     setTimeout(() => {
         notification.style.opacity = '1';
         notification.style.transform = 'translateY(0) scale(1)';
     }, 10);
 
-    // Ocultar la notificación después de 3 segundos
+    // Hide the notification after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(30px) scale(0.95)';
     }, 3000);
 };
 
-// Función para actualizar el contador del carrito en el encabezado.
+// Function to update the cart counter in the header.
 const updateCartCount = () => {
-    // Obtiene el carrito de localStorage, si no existe, usa un array vacío.
+    // Get the cart from localStorage. If it doesn't exist, use an empty array.
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    // Calcula el total de artículos en el carrito sumando las cantidades de cada producto.
+    // Calculate the total items in the cart by summing the quantities of each product.
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
-    // Actualiza el texto del botón del carrito con el nuevo total.
-    cartButton.textContent = `🛒 Carrito (${totalItems})`;
+    // Update the cart button text with the new total.
+    cartButton.textContent = `🛒 Cart (${totalItems})`;
 };
 
-// Función para rellenar los detalles del producto en la página.
+// Function to populate the product details on the page.
 const renderProductDetails = (selectedProduct) => {
     document.getElementById('product-name').textContent = selectedProduct.name;
     document.getElementById('product-price').textContent = `$${selectedProduct.price}`;
     document.getElementById('product-description').textContent = selectedProduct.description;
 
-    // LÓGICA DE LA IMAGEN: Carga la imagen del producto seleccionado
+    // IMAGE LOGIC: Load the selected product's image
     if (productImageElement && selectedProduct.image) {
         productImageElement.src = selectedProduct.image;
-        productImageElement.alt = `Imagen de ${selectedProduct.name}`;
+        productImageElement.alt = `Image of ${selectedProduct.name}`;
     }
 
-    // Rellena las características
+    // Populate the features
     const featuresList = document.getElementById('product-features');
-    featuresList.innerHTML = ''; // Limpia las características existentes
+    featuresList.innerHTML = ''; // Clear existing features
     selectedProduct.features.forEach(feature => {
         const li = document.createElement('li');
         li.textContent = feature;
         featuresList.appendChild(li);
     });
 
-    // Añade el evento para el botón "Añadir al carrito"
+    // Add the event for the "Add to cart" button
     const addToCartButton = document.querySelector('.add-to-cart-button');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', (e) => {
             e.preventDefault();
-            // Lógica para añadir al carrito
+            // Logic to add to cart
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             const existingProductIndex = cart.findIndex(item => item.id === selectedProduct.id);
@@ -101,13 +101,13 @@ const renderProductDetails = (selectedProduct) => {
 
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            showNotification(`✅ "${selectedProduct.name}" añadido al carrito.`);
+            showNotification(`✅ "${selectedProduct.name}" has been added to the cart.`);
         });
     }
 };
 
 // ============================================
-// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// HAMBURGER MENU FUNCTIONALITY
 // ============================================
 const initHamburgerMenu = () => {
     const hamburgerButton = document.getElementById('hamburger-menu');
@@ -115,12 +115,12 @@ const initHamburgerMenu = () => {
 
     if (hamburgerButton && nav) {
         hamburgerButton.addEventListener('click', () => {
-            // Toggle clases activas
+            // Toggle active classes
             hamburgerButton.classList.toggle('active');
             nav.classList.toggle('active');
         });
 
-        // Cerrar menú al hacer clic en un enlace
+        // Close menu when a link is clicked
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -129,7 +129,7 @@ const initHamburgerMenu = () => {
             });
         });
 
-        // Cerrar menú al hacer clic fuera de él
+        // Close menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideNav = nav.contains(event.target);
             const isClickOnHamburger = hamburgerButton.contains(event.target);
@@ -142,31 +142,31 @@ const initHamburgerMenu = () => {
     }
 };
 
-// Inicializa la página al cargar el DOM.
+// Initialize the page when the DOM loads.
 document.addEventListener('DOMContentLoaded', () => {
-    // Selecciona el elemento de imagen para asegurarse de que exista antes de intentar usarlo.
+    // Select the image element to ensure it exists before trying to use it.
     const productImageElement = document.getElementById('product-image');
 
-    // Muestra una imagen de fallback si la imagen no se carga (útil para depurar)
+    // Show a fallback if the image fails to load (useful for debugging)
     if (productImageElement) {
         productImageElement.onerror = function() {
-            console.error("Error al cargar la imagen. Revisar la ruta en localStorage.");
-            // Opcionalmente puedes poner un placeholder si falla la carga:
-            // this.src = 'https://via.placeholder.com/400x400/FF0000/FFFFFF?text=Error+Carga+Imagen';
-            this.style.display = 'none'; // Ocultar si falla completamente
+            console.error("Error loading image. Check the path in localStorage.");
+            // Optionally set a placeholder if load fails completely:
+            // this.src = 'https://via.placeholder.com/400x400/FF0000/FFFFFF?text=Image+Load+Error';
+            this.style.display = 'none'; // Hide if it completely fails
         };
     }
 
     updateCartCount();
-    initHamburgerMenu(); // Inicializa el menú hamburguesa
+    initHamburgerMenu(); // Initialize hamburger menu
 
-    // Obtiene el producto seleccionado de localStorage (guardado desde la página de inicio).
+    // Get the selected product from localStorage (saved from the home/products page).
     const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct'));
 
     if (selectedProduct) {
         renderProductDetails(selectedProduct);
     } else {
-        // Si no se encontró un producto, muestra un mensaje de error.
-        productDetailSection.innerHTML = `<p>Producto no encontrado. Por favor, vuelve a la <a href="../Productos/Productos.html">página de productos</a>.</p>`;
+        // If no product was found, show an error message.
+        productDetailSection.innerHTML = `<p>Product not found. Please go back to the <a href="../Productos/Productos.html">products page</a>.</p>`;
     }
 });

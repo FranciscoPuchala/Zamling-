@@ -1,65 +1,76 @@
 <?php
 // ==================================================================================
-//                            CONFIGURACIÓN INICIAL
+//                            INITIAL CONFIGURATION
 // ==================================================================================
 
-// 1. Cargar las librerías instaladas por Composer (¡Obligatorio!)
-// Requiere la carpeta 'vendor/' que crearemos en el siguiente paso.
+// 1. Load the libraries installed by Composer (Required!)
+// Requires the 'vendor/' folder created in the next step.
 require __DIR__ . '/vendor/autoload.php';
 
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
 
-// 🛑 CLAVE SECRETA: Tu Access Token de Mercado Pago
-// ESTE VALOR DEBE SER TU TOKEN REAL DE PRODUCCIÓN O PRUEBA.
-$access_token = 'APP_USR-5837998060821264-102513-1754dd09943cc57aa1eb687aa622e884-1397114700'; 
+// 🛑 SECRET KEY: Your Mercado Pago Access Token
+// THIS VALUE MUST BE YOUR REAL PRODUCTION OR TEST TOKEN.
+$access_token = 'APP_USR-5837998060821264-102513-1754dd09943cc57aa1eb687aa622e884-1397114700';
 
 if (empty($access_token)) {
     http_response_code(500);
-    echo json_encode(["error" => "Access Token de Mercado Pago no configurado."]);
+    echo json_encode(["error" => "Mercado Pago Access Token not configured."]);
     exit;
 }
 
-// 2. Inicializar el cliente de Mercado Pago
+// 2. Initialize the Mercado Pago client
 MercadoPagoConfig::setAccessToken($access_token);
 $client = new PreferenceClient();
 
 // ==================================================================================
-//                    ⚡ TU "BASE DE DATOS" DE PRECIOS SEGURA ⚡
+//                    ⚡ YOUR SECURE PRICE "DATABASE" ⚡
 // ==================================================================================
-// Define la moneda que usarás: UYU (Uruguay), ARS (Argentina), USD, BRL, etc.
-$DEFAULT_CURRENCY_ID = 'UYU'; // 🛑 CAMBIA ESTO SI USAS OTRA MONEDA
+// Define the currency you will use: UYU (Uruguay), ARS (Argentina), USD, BRL, etc.
+$DEFAULT_CURRENCY_ID = 'UYU'; // 🛑 CHANGE THIS IF YOU USE A DIFFERENT CURRENCY
 
 $masterPriceList = [
-    // ID: [ 'name' => nombre, 'price' => precio (en UYU) ]
-    // (Datos tomados de tu server.js)
-    '1' => ['name' => 'iPhone 16 Pro Max', 'price' => 10], 
-    '2' => ['name' => 'iPad Pro', 'price' => 10.00], 
-    '3' => ['name' => 'Apple Watch Series 10', 'price' => 30000.00], 
-    '4' => ['name' => 'Funda de Silicona', 'price' => 1500.00], 
-    '5' => ['name' => 'Cargador MagSafe', 'price' => 1200.00], 
-    '6' => ['name' => 'MacBook Air 15\'\'', 'price' => 50000.00], 
-    '7' => ['name' => 'AirPods Pro', 'price' => 9500.00], 
-    '8' => ['name' => 'iPhone SE', 'price' => 16500.00] 
+    // ID: [ 'name' => name, 'price' => price (in UYU) ]
+    '1'  => ['name' => 'High-Waist Stretch Jeans',          'price' => 998.00],
+    '2'  => ['name' => 'Animal Print Dress',                 'price' => 998.00],
+    '3'  => ['name' => 'Linen Vest',                         'price' => 998.00],
+    '4'  => ['name' => 'Trunk-Style Handbag',                'price' => 3598.00],
+    '5'  => ['name' => 'Classic Handbag',                    'price' => 3298.00],
+    '6'  => ['name' => 'Stretch Trousers',                   'price' => 998.00],
+    '7'  => ['name' => 'Classic Trousers',                   'price' => 998.00],
+    '8'  => ['name' => 'Denim Jeans',                        'price' => 998.00],
+    '9'  => ['name' => 'Linen Trousers',                     'price' => 998.00],
+    '10' => ['name' => 'Gabardine Trousers',                 'price' => 998.00],
+    '11' => ['name' => 'Cotton Trousers',                    'price' => 998.00],
+    '12' => ['name' => 'Embroidered Prili Dress',            'price' => 1598.00],
+    '13' => ['name' => 'Cotton Dress',                       'price' => 1598.00],
+    '14' => ['name' => 'Summer Cotton Dress',                'price' => 1598.00],
+    '15' => ['name' => 'Italian Top',                        'price' => 1598.00],
+    '16' => ['name' => 'Linen & Cotton Tee',                 'price' => 1598.00],
+    '17' => ['name' => 'Short-Sleeve Linen & Cotton Tee',   'price' => 1598.00],
+    '18' => ['name' => 'Italian Long-Sleeve Top',            'price' => 1598.00],
+    '19' => ['name' => 'Leather Belts',                      'price' => 3298.00],
+    '20' => ['name' => 'Mini Purse',                         'price' => 3298.00],
 ];
 
 // ==================================================================================
-//                           LÓGICA DEL ENDPOINT POST
+//                           POST ENDPOINT LOGIC
 // ==================================================================================
 
-// 3. Configurar para recibir la solicitud JSON
+// 3. Configure to receive the JSON request
 header('Content-Type: application/json');
 
-// Recibir el JSON del cuerpo de la solicitud POST (como lo hacía Express en Node)
+// Receive the JSON from the POST request body
 $request_body = file_get_contents('php://input');
 $data = json_decode($request_body, true);
 
-// Obtener el carrito del cliente
+// Get the client's cart
 $clientCart = $data['cart'] ?? null;
 
 if (empty($clientCart)) {
     http_response_code(400);
-    echo json_encode(["error" => "El carrito está vacío o mal formado."]);
+    echo json_encode(["error" => "The cart is empty or malformed."]);
     exit;
 }
 
@@ -70,21 +81,21 @@ try {
     foreach ($clientCart as $item) {
         $itemId = $item['id'] ?? null;
         $quantity = $item['quantity'] ?? null;
-        
+
         $masterProduct = $masterPriceList[$itemId] ?? null;
 
-        // 🛑 VERIFICACIÓN DE SEGURIDAD
+        // 🛑 SECURITY CHECK
         if (!$masterProduct || !is_numeric($quantity) || $quantity <= 0) {
-            error_log("Intento de pago con datos de carrito inválidos: " . $itemId . " / " . $quantity);
+            error_log("Payment attempt with invalid cart data: " . $itemId . " / " . $quantity);
             http_response_code(400);
-            echo json_encode(["error" => "El carrito contiene productos o cantidades inválidas."]);
+            echo json_encode(["error" => "The cart contains invalid products or quantities."]);
             exit;
         }
 
-        // 4. Se asegura la estructura correcta de los ITEMS
+        // 4. Ensure the correct item structure
         $itemsForMP[] = [
-            'id' => (string)$itemId, 
-            'title' => $masterProduct['name'],         
+            'id' => (string)$itemId,
+            'title' => $masterProduct['name'],
             'unit_price' => (float)$masterProduct['price'],
             'quantity' => (int)$quantity,
             'currency_id' => $DEFAULT_CURRENCY_ID,
@@ -92,44 +103,44 @@ try {
 
         $serverCalculatedTotal += $masterProduct['price'] * $quantity;
     }
-    
-    // 5. Crear la preferencia de pago
+
+    // 5. Create the payment preference
     $preferenceData = [
         'items' => $itemsForMP,
         'payer' => [
-            'name' => 'Comprador',
-            'surname' => 'Prueba',
+            'name' => 'Buyer',
+            'surname' => 'Test',
             'email' => 'julipuchala@gmail.com',
         ],
-        // 🚨 Configuración de Redirección (URLs tomadas de tu server.js) 🚨
-        'back_urls' => [ 
-            'success' => "https://franciscopuchala.github.io/layout-de-la-pagina/success.html", 
-            'failure' => "https://franciscopuchala.github.io/layout-de-la-pagina/failure.html", 
-            'pending' => "https://franciscopuchala.github.io/layout-de-la-pagina/pending.html", 
+        // 🚨 Redirect Configuration 🚨
+        'back_urls' => [
+            'success' => "https://franciscopuchala.github.io/layout-de-la-pagina/success.html",
+            'failure' => "https://franciscopuchala.github.io/layout-de-la-pagina/failure.html",
+            'pending' => "https://franciscopuchala.github.io/layout-de-la-pagina/pending.html",
         ],
     ];
 
-    // Se usa el cliente del SDK para crear la preferencia
+    // Use the SDK client to create the preference
     $result = $client->create($preferenceData);
 
-    // 6. Respondemos al frontend con el ID y la URL de redirección
+    // 6. Respond to the frontend with the ID and redirect URL
     http_response_code(200);
-    echo json_encode([ 
-        'id' => $result->id, 
-        'init_point' => $result->init_point // 🟢 CLAVE: URL de Mercado Pago
+    echo json_encode([
+        'id' => $result->id,
+        'init_point' => $result->init_point // 🟢 KEY: Mercado Pago URL
     ]);
 
 } catch (\Exception $e) {
-    // Manejo de errores del SDK
-    error_log('🔴 ERROR CRÍTICO al crear la preferencia: ' . $e->getMessage());
-    
+    // SDK error handling
+    error_log('🔴 CRITICAL ERROR creating preference: ' . $e->getMessage());
+
     $error_message = $e->getMessage();
     if (strpos($error_message, 'Invalid credentials') !== false || strpos($error_message, '401') !== false) {
         http_response_code(500);
-        echo json_encode(["error" => "Fallo de autenticación. Verifica tu Access Token.", "details" => $error_message]);
+        echo json_encode(["error" => "Authentication failed. Check your Access Token.", "details" => $error_message]);
     } else {
         http_response_code(500);
-        echo json_encode(["error" => "Hubo un error interno en el servidor: " . $error_message]);
+        echo json_encode(["error" => "There was an internal server error: " . $error_message]);
     }
 }
 

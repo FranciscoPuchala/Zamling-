@@ -1,16 +1,16 @@
-// Función para actualizar el contador del carrito en el encabezado
+// Function to update the cart counter in the header
 const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
     const cartButton = document.querySelector('.cart-button');
 
     if (cartButton) {
-        cartButton.textContent = `🛒 Carrito (${totalItems})`;
+        cartButton.textContent = `🛒 Cart (${totalItems})`;
     }
     return totalItems;
 };
 
-// Función para agregar un mensaje al chat
+// Function to add a message to the chat
 const addMessage = (text, sender) => {
     const chatMessages = document.getElementById('chat-messages');
     const messageBubble = document.createElement('div');
@@ -20,7 +20,7 @@ const addMessage = (text, sender) => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 };
 
-// Función para mostrar el indicador de escritura
+// Function to show the typing indicator
 const showTypingIndicator = () => {
     const chatMessages = document.getElementById('chat-messages');
     const typingDiv = document.createElement('div');
@@ -31,7 +31,7 @@ const showTypingIndicator = () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 };
 
-// Función para ocultar el indicador de escritura
+// Function to hide the typing indicator
 const hideTypingIndicator = () => {
     const typingIndicator = document.getElementById('typing-indicator');
     if (typingIndicator) {
@@ -39,18 +39,18 @@ const hideTypingIndicator = () => {
     }
 };
 
-// Función para simular una respuesta del soporte
+// Function to simulate a support response
 const simulateSupportResponse = () => {
     showTypingIndicator();
-    
+
     setTimeout(() => {
         hideTypingIndicator();
         const responses = [
-            '¡Hola! ¿En qué puedo ayudarte hoy?',
-            'Gracias por contactarnos. Un especialista te responderá pronto.',
-            'Estamos aquí para ayudarte con cualquier consulta sobre nuestros productos.',
-            '¿Tienes alguna pregunta sobre nuestras prendas o envíos?',
-            'Nuestro equipo está listo para asistirte. ¿Qué necesitas?'
+            'Hello! How can I help you today?',
+            'Thank you for reaching out. A specialist will respond to you shortly.',
+            'We are here to help you with any questions about our products.',
+            'Do you have any questions about our garments or shipping?',
+            'Our team is ready to assist you. What do you need?'
         ];
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         addMessage(randomResponse, 'support');
@@ -58,7 +58,7 @@ const simulateSupportResponse = () => {
 };
 
 // ============================================
-// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// HAMBURGER MENU FUNCTIONALITY
 // ============================================
 const initHamburgerMenu = () => {
     const hamburgerButton = document.getElementById('hamburger-menu');
@@ -66,12 +66,12 @@ const initHamburgerMenu = () => {
 
     if (hamburgerButton && nav) {
         hamburgerButton.addEventListener('click', () => {
-            // Toggle clases activas
+            // Toggle active classes
             hamburgerButton.classList.toggle('active');
             nav.classList.toggle('active');
         });
 
-        // Cerrar menú al hacer clic en un enlace
+        // Close menu when a link is clicked
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -80,7 +80,7 @@ const initHamburgerMenu = () => {
             });
         });
 
-        // Cerrar menú al hacer clic fuera de él
+        // Close menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideNav = nav.contains(event.target);
             const isClickOnHamburger = hamburgerButton.contains(event.target);
@@ -93,15 +93,15 @@ const initHamburgerMenu = () => {
     }
 };
 
-// Inicialización del DOM
+// DOM Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // Actualizar contador del carrito al cargar
+    // Update cart counter on load
     updateCartCount();
-    
-    // Inicializar menú hamburguesa
+
+    // Initialize hamburger menu
     initHamburgerMenu();
-    
-    // Referencias a elementos del chat
+
+    // References to chat elements
     const startChatBtn = document.getElementById('start-chat-btn');
     const closeChatBtn = document.getElementById('close-chat-btn');
     const chatWidget = document.getElementById('chat-widget');
@@ -109,20 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatMessages = document.getElementById('chat-messages');
 
-    // Abrir chat si el botón existe
+    // Open chat if the button exists
     if (startChatBtn) {
         startChatBtn.addEventListener('click', () => {
             chatWidget.style.display = 'flex';
             setTimeout(() => {
                 chatWidget.classList.add('visible');
                 if (chatMessages.children.length === 0) {
-                    addMessage('¡Bienvenido a Zamlnig! ¿Cómo podemos ayudarte?', 'support');
+                    addMessage('Welcome to Velour & Co.! How can we help you?', 'support');
                 }
             }, 10);
         });
     }
 
-    // Cerrar chat
+    // Close chat
     if (closeChatBtn) {
         closeChatBtn.addEventListener('click', () => {
             chatWidget.classList.remove('visible');
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Enviar mensaje en el chat
+    // Send message in chat
     if (chatForm) {
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Animación de aparición de las tarjetas de contacto
+    // Contact card entrance animation
     const contactCards = document.querySelectorAll('.contact-card');
     const observerOptions = {
         threshold: 0.1,

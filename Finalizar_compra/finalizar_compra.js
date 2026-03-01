@@ -1,30 +1,30 @@
-// Selecciona los elementos del DOM que vamos a usar
+// Select the DOM elements we will use
 const totalElement = document.getElementById('total-price');
 const mpOption = document.getElementById('mp-option');
 const transferOption = document.getElementById('transfer-option');
 const cartButton = document.querySelector('.cart-button');
-const confirmPurchaseButton = document.getElementById('pay-mp-button'); 
+const confirmPurchaseButton = document.getElementById('pay-mp-button');
 
-// ** IMPORTANTE: CLAVE PÚBLICA DE MERCADO PAGO **
-// Mantenemos la clave por si usas otros componentes, pero no es estrictamente necesaria para la redirección.
+// ** IMPORTANT: MERCADO PAGO PUBLIC KEY **
+// We keep the key in case you use other components, but it is not strictly necessary for the redirect.
 const MP_PUBLIC_KEY = "APP_USR-6dd13bed-0f80-4ddf-b7b6-2382f59895ac";
 
-// Función de utilidad para mostrar mensajes (Usando console.log/error en lugar de alert)
+// Utility function to display messages (Using console.log/error instead of alert)
 const showMessage = (message, isError = false) => {
     if (isError) {
-        console.error("ERROR ALERTA USUARIO:", message);
+        console.error("USER ALERT ERROR:", message);
     } else {
-        console.log("INFO ALERTA USUARIO:", message);
+        console.log("USER ALERT INFO:", message);
     }
-    // Implementa un modal o mensaje en el DOM si no quieres usar alert()
+    // Implement a modal or DOM message if you don't want to use alert()
 };
 
 
-// 2. Otras funciones de utilidad
+// 2. Other utility functions
 const updateCheckoutTotal = () => {
     const checkoutTotal = localStorage.getItem('checkoutTotal');
     const subtotalSummary = document.getElementById('subtotal-price');
-    
+
     if (checkoutTotal) {
         if (totalElement) totalElement.textContent = `$${checkoutTotal}`;
         if (subtotalSummary) subtotalSummary.textContent = `$${checkoutTotal}`;
@@ -37,8 +37,8 @@ const updateCheckoutTotal = () => {
 const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
-    if(cartButton) {
-        cartButton.textContent = `🛒 Carrito (${totalItems})`;
+    if (cartButton) {
+        cartButton.textContent = `🛒 Cart (${totalItems})`;
     }
 };
 
@@ -59,74 +59,74 @@ const handlePaymentSelection = () => {
 };
 
 
-// 5. Función para manejar la confirmación de la compra (ACTUALIZADA PARA REDIRECCIÓN)
+// 5. Function to handle purchase confirmation (UPDATED FOR REDIRECT)
 const handlePaymentConfirmation = () => {
     if (!confirmPurchaseButton) {
-        console.error("Error: Falta el botón de pago.");
+        console.error("Error: Payment button is missing.");
         return;
     }
-    
+
     confirmPurchaseButton.addEventListener('click', async () => {
-        // Deshabilitar el botón y mostrar estado
-        confirmPurchaseButton.textContent = 'Generando Pago...';
+        // Disable the button and show status
+        confirmPurchaseButton.textContent = 'Generating Payment...';
         confirmPurchaseButton.disabled = true;
 
         try {
-            
-            // PASO CLAVE 1: OBTENER LOS DATOS DEL CARRITO
-            const fullCart = JSON.parse(localStorage.getItem('cart')) || []; 
+
+            // KEY STEP 1: GET CART DATA
+            const fullCart = JSON.parse(localStorage.getItem('cart')) || [];
             if (fullCart.length === 0) {
-                showMessage('El carrito está vacío. Agrega productos antes de pagar.', true);
-                throw new Error("Carrito vacío."); 
+                showMessage('Your cart is empty. Add products before paying.', true);
+                throw new Error("Empty cart.");
             }
 
-            // Mapeo seguro de ID y cantidad
+            // Safe mapping of ID and quantity
             const itemsForServer = fullCart.map(item => ({
-                id: String(item.id), 
+                id: String(item.id),
                 quantity: Number(item.quantity),
             }));
-            
+
             const requestBody = { cart: itemsForServer };
-            
-            // Llama al servidor (http://localhost:4000) para crear la preferencia de pago
+
+            // Call the server to create the payment preference
             const response = await fetch('https://layoutprueba.com/create_preference.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody), 
+                body: JSON.stringify(requestBody),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Fallo la creación de la preferencia en el servidor.');
+                throw new Error(data.error || 'Failed to create preference on the server.');
             }
 
-            const { init_point } = data; // 🟢 Obtenemos la URL de redirección
+            const { init_point } = data; // 🟢 Get the redirect URL
 
             if (init_point) {
-                 // 🟢 PASO CLAVE 2: Redirección
-                 showMessage('Redirigiendo a Mercado Pago...', false);
-                 // Redirige al usuario a la página de pago de Mercado Pago
-                 window.location.href = init_point; 
-                 
+                 // 🟢 KEY STEP 2: Redirect
+                 showMessage('Redirecting to Mercado Pago...', false);
+                 // Redirect the user to the Mercado Pago payment page
+                 window.location.href = init_point;
+
             } else {
-                throw new Error("El servidor no devolvió el enlace de pago (init_point).");
+                throw new Error("The server did not return the payment link (init_point).");
             }
 
 
-        } catch (error) { 
-            console.error('Error durante la confirmación de compra:', error.message);
-            // Mostrar error al usuario
-            showMessage('Hubo un error al procesar el pago: ' + error.message, true); 
-            // Restaurar el botón
-            confirmPurchaseButton.textContent = 'Error. Reintentar Compra';
+        } catch (error) {
+            console.error('Error during purchase confirmation:', error.message);
+            // Show error to the user
+            showMessage('There was an error processing the payment: ' + error.message, true);
+            // Restore the button
+            confirmPurchaseButton.textContent = 'Error. Retry Purchase';
             confirmPurchaseButton.disabled = false;
         }
     });
 };
 
 // ============================================
-// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// HAMBURGER MENU FUNCTIONALITY
 // ============================================
 const initHamburgerMenu = () => {
     const hamburgerButton = document.getElementById('hamburger-menu');
@@ -134,12 +134,12 @@ const initHamburgerMenu = () => {
 
     if (hamburgerButton && nav) {
         hamburgerButton.addEventListener('click', () => {
-            // Toggle clases activas
+            // Toggle active classes
             hamburgerButton.classList.toggle('active');
             nav.classList.toggle('active');
         });
 
-        // Cerrar menú al hacer clic en un enlace
+        // Close menu when a link is clicked
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -148,7 +148,7 @@ const initHamburgerMenu = () => {
             });
         });
 
-        // Cerrar menú al hacer clic fuera de él
+        // Close menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideNav = nav.contains(event.target);
             const isClickOnHamburger = hamburgerButton.contains(event.target);
@@ -161,11 +161,11 @@ const initHamburgerMenu = () => {
     }
 };
 
-// Ejecución al cargar la página
+// Execution on page load
 document.addEventListener('DOMContentLoaded', () => {
     updateCheckoutTotal();
     updateCartCount();
     handlePaymentSelection();
     handlePaymentConfirmation();
-    initHamburgerMenu(); // Inicializa el menú hamburguesa
+    initHamburgerMenu(); // Initialize hamburger menu
 });

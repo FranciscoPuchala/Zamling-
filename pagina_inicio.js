@@ -1,10 +1,10 @@
-// Archivo: pagina_inicio.js
-// Este script maneja la lógica de añadir productos al carrito desde la página de inicio, 
-// asegurando que se guarden todos los datos necesarios, incluyendo la imagen, para el carrito.
-// También maneja la funcionalidad del menú hamburguesa para móviles.
+// File: pagina_inicio.js
+// This script handles the logic for adding products to the cart from the home page,
+// ensuring all necessary data is saved, including the image, for the cart.
+// It also handles hamburger menu functionality for mobile.
 
-// Mapeo de IDs de producto a sus URLs de imagen.
-// Estos paths son CRÍTICOS para que las imágenes se muestren correctamente en el carrito.
+// Mapping of product IDs to their image URLs.
+// These paths are CRITICAL for images to display correctly in the cart.
 const productImageMap = {
     '1': '../img/pantalon1.jpeg',
     '2': '../img/vestido_animal.jpeg',
@@ -13,14 +13,38 @@ const productImageMap = {
     '5': '../img/cartera_blanca.jpeg'
 };
 
-// Función para mostrar una notificación temporal al usuario.
+// Full product data for home page products (IDs 1-5)
+const homeProductData = {
+    '1': {
+        description: "High-waist stretch jeans designed for comfort and style. Perfect for any occasion with a modern, flattering fit.",
+        features: ["High waist", "Stretch fabric", "Contemporary design", "Perfect fit"]
+    },
+    '2': {
+        description: "Animal print dress that combines elegance with a bold, wild style.",
+        features: ["Animal print pattern", "Elegant design", "Premium quality fabric", "Flattering cut"]
+    },
+    '3': {
+        description: "Lightweight and versatile linen vest, ideal for creating sophisticated looks.",
+        features: ["100% natural linen", "Breathable", "Versatile", "Premium finish"]
+    },
+    '4': {
+        description: "Trunk-style handbag with an exclusive design that blends functionality and style.",
+        features: ["Trunk-style design", "Multiple compartments", "Durable material", "Luxury finish"]
+    },
+    '5': {
+        description: "Elegant handbag with a minimalist design, perfect for any occasion.",
+        features: ["Minimalist design", "Compact and functional", "High-quality material", "Guaranteed versatility"]
+    }
+};
+
+// Function to show a temporary notification to the user.
 const showNotification = (message) => {
-    // Intenta encontrar un contenedor de notificación existente o crea uno
+    // Try to find an existing notification container or create one
     let notification = document.getElementById('cart-notification');
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'cart-notification';
-        // Añadir estilos básicos con color amarillo/naranja y posición abajo a la derecha
+        // Add basic styles with yellow/orange color and bottom-right position
         notification.style.cssText = `
             position: fixed;
             bottom: 20px;
@@ -40,66 +64,65 @@ const showNotification = (message) => {
         `;
         document.body.appendChild(notification);
     }
-    
-    // Actualizar mensaje y mostrar con animación suave
+
+    // Update message and show with smooth animation
     notification.textContent = message;
-    
-    // Pequeño delay para asegurar que la transición se aplique
+
+    // Small delay to ensure the transition is applied
     setTimeout(() => {
         notification.style.opacity = '1';
         notification.style.transform = 'translateY(0) scale(1)';
     }, 10);
 
-    // Ocultar la notificación después de 3 segundos con animación suave
+    // Hide the notification after 3 seconds with smooth animation
     setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateY(30px) scale(0.95)';
     }, 3000);
 };
 
-// Función para actualizar el contador del carrito en el encabezado.
+// Function to update the cart counter in the header.
 const updateCartCount = () => {
-    // Intenta obtener el carrito. Si no existe, usa un array vacío.
+    // Try to get the cart. If it doesn't exist, use an empty array.
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
     const cartButton = document.querySelector('.cart-button');
 
     if (cartButton) {
-        cartButton.textContent = `🛒 Carrito (${totalItems})`;
+        cartButton.textContent = `🛒 Cart (${totalItems})`;
     }
-    return totalItems; // Retorna el total por si acaso
+    return totalItems;
 };
 
-// Función para añadir un producto al carrito en localStorage
-// Se añade 'imageURL' como nuevo parámetro.
+// Function to add a product to the cart in localStorage
+// 'imageURL' is added as a new parameter.
 const addToCart = (productId, name, price, imageURL) => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     const productIndex = cart.findIndex(item => item.id === productId);
 
     if (productIndex > -1) {
-        // El producto ya está en el carrito, incrementa la cantidad
+        // Product is already in the cart, increment the quantity
         cart[productIndex].quantity += 1;
     } else {
-        // El producto es nuevo, añádelo
+        // New product, add it
         const newProduct = {
             id: productId,
             name: name,
-            price: price, 
-            image: imageURL, // CRÍTICO: Guardamos la URL de la imagen
+            price: price,
+            image: imageURL, // CRITICAL: Save the image URL
             quantity: 1,
         };
         cart.push(newProduct);
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount(); // Actualiza el contador visible
-    // 🛒 RESTAURADO: Muestra la notificación al usuario
-    showNotification(`✅ "${name}" añadido al carrito.`); 
-    console.log(`Producto añadido: ${name} (ID: ${productId}, Imagen: ${imageURL})`);
+    updateCartCount(); // Update the visible counter
+    showNotification(`✅ "${name}" added to cart.`);
+    console.log(`Product added: ${name} (ID: ${productId}, Image: ${imageURL})`);
 };
 
 // ============================================
-// FUNCIONALIDAD DEL MENÚ HAMBURGUESA
+// HAMBURGER MENU FUNCTIONALITY
 // ============================================
 const initHamburgerMenu = () => {
     const hamburgerButton = document.getElementById('hamburger-menu');
@@ -107,12 +130,12 @@ const initHamburgerMenu = () => {
 
     if (hamburgerButton && nav) {
         hamburgerButton.addEventListener('click', () => {
-            // Toggle clases activas
+            // Toggle active classes
             hamburgerButton.classList.toggle('active');
             nav.classList.toggle('active');
         });
 
-        // Cerrar menú al hacer clic en un enlace
+        // Close menu when a link is clicked
         const navLinks = nav.querySelectorAll('a');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -121,7 +144,7 @@ const initHamburgerMenu = () => {
             });
         });
 
-        // Cerrar menú al hacer clic fuera de él
+        // Close menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideNav = nav.contains(event.target);
             const isClickOnHamburger = hamburgerButton.contains(event.target);
@@ -134,48 +157,48 @@ const initHamburgerMenu = () => {
     }
 };
 
-// Inicializa los listeners de los botones "Añadir al carrito" y los productos
+// Initialize listeners for "Add to cart" buttons and product cards
 document.addEventListener('DOMContentLoaded', () => {
-    updateCartCount(); // Inicializa el contador al cargar la página
-    initHamburgerMenu(); // Inicializa el menú hamburguesa
+    updateCartCount(); // Initialize the counter when the page loads
+    initHamburgerMenu(); // Initialize the hamburger menu
 
-    // 1. Manejar clics en los botones "Añadir al carrito"
+    // 1. Handle clicks on "Add to cart" buttons
     document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', (event) => {
-            event.preventDefault(); // Detiene la navegación del enlace
-            event.stopPropagation(); // Evita que el clic se propague a la tarjeta
+            event.preventDefault(); // Stop link navigation
+            event.stopPropagation(); // Prevent the click from propagating to the card
 
             const productCard = event.target.closest('.product-card');
 
             if (productCard) {
-                // Captura los datos CRÍTICOS para el servidor
+                // Capture the CRITICAL data for the server
                 const productId = productCard.getAttribute('data-id');
                 const productName = productCard.querySelector('h3').textContent.trim();
-                
-                // Limpia y convierte el precio a un número decimal (CRÍTICO)
+
+                // Clean and convert the price to a decimal number (CRITICAL)
                 const priceElement = productCard.querySelector('.price').textContent.trim();
                 const productPrice = parseFloat(priceElement.replace('$', '').replace('.', ''));
-                
-                // CRÍTICO: Obtiene la URL de la imagen del mapa
+
+                // CRITICAL: Get the image URL from the map
                 const productImage = productImageMap[productId];
 
 
                 if (productId && productName && !isNaN(productPrice) && productImage) {
-                    // Llama a addToCart incluyendo la URL de la imagen
+                    // Call addToCart including the image URL
                     addToCart(productId, productName, productPrice, productImage);
                 } else {
-                    console.error('Error al capturar datos del producto para el carrito:', { productId, productName, productPrice, productImage });
+                    console.error('Error capturing product data for the cart:', { productId, productName, productPrice, productImage });
                 }
             }
         });
     });
 
-    // 2. Manejar clics en las tarjetas de producto (para mantener la función de redirección a la página de detalle)
+    // 2. Handle clicks on product cards (to maintain redirection to the detail page)
     document.querySelectorAll('.product-card').forEach(card => {
-        // Excluimos el botón "Añadir al carrito" para que no dispare la redirección
+        // Exclude the "Add to cart" button so it doesn't trigger the redirect
         const addToCartButton = card.querySelector('.add-to-cart');
         if (addToCartButton) {
-            // Aseguramos que el clic en la tarjeta solo redirija si no es el botón de añadir al carrito
+            // Ensure the card click only redirects if it's not the add-to-cart button
             card.addEventListener('click', (event) => {
                 if (event.target !== addToCartButton && !event.target.closest('.add-to-cart')) {
                     const productId = card.getAttribute('data-id');
@@ -183,23 +206,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     const priceElement = card.querySelector('.price').textContent.trim();
                     const productPrice = parseFloat(priceElement.replace('$', ''));
                     const productImage = productImageMap[productId];
+                    const data = homeProductData[productId] || {
+                        description: "Contemporary fashion piece by Velour & Co.",
+                        features: ["Premium quality", "Exclusive design", "Contemporary style"]
+                    };
 
-                    // Prepara y guarda la información del producto seleccionado
+                    // Prepare and save the selected product information
                     if (productId && productName && !isNaN(productPrice) && productImage) {
                         const selectedProduct = {
                             id: productId,
                             name: productName,
                             price: productPrice,
                             image: productImage,
-                            description: "Descripción genérica...", 
-                            features: ["Función 1", "Función 2"]
+                            description: data.description,
+                            features: data.features
                         };
-                        
+
                         localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
-                        // Redirige a la página de producto.
+                        // Redirect to the product page.
                         window.location.href = `./Producto/pagina_producto.html`;
                     } else {
-                        console.error('Error al capturar datos para la redirección a la página de producto.');
+                        console.error('Error capturing data for redirect to product page.');
                     }
                 }
             });

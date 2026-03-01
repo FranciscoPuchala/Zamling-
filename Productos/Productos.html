@@ -1,200 +1,201 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos | Zamlnig</title>
+    <title>Products | Velour & Co.</title>
     <link rel="stylesheet" href="productos_style.css">
 </head>
 <body>
     <header>
         <div class="logo">
             <a href="../index.html">
-                <img src="../img/logo.png" alt="Zamlnig Logo">
+                <img src="../img/logo.png" alt="Velour & Co. Logo">
             </a>
         </div>
-        
-        <!-- Botón hamburguesa para móvil -->
-        <button class="hamburger-menu" id="hamburger-menu" aria-label="Menú">
+
+        <!-- Hamburger button for mobile -->
+        <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu">
             <span></span>
             <span></span>
             <span></span>
         </button>
-        
+
         <nav id="main-nav">
              <ul>
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../Productos/Productos.html">Productos</a></li>
-                <li><a href="../Contacto/contactos.html">Contacto</a></li>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Productos/Productos.html">Products</a></li>
+                <li><a href="../Contacto/contactos.html">Contact</a></li>
             </ul>
         </nav>
         <div class="search-and-cart">
-            <a href="../Carrito/pagina_carrito.html" class="cart-button">🛒 Carrito (0)</a>
+            <a href="../Carrito/pagina_carrito.html" class="cart-button">🛒 Cart (0)</a>
         </div>
     </header>
 
     <main class="products-page-main">
         <div class="products-header">
-            <h1>Explora Nuestros Productos</h1>
-            <p>Encuentra la moda que define tu estilo único, con la calidad excepcional que solo Zamlnig puede ofrecer.</p>
+            <h1>Explore Our Products</h1>
+            <p>Find the fashion that defines your unique style, with the exceptional quality only Velour & Co. can offer.</p>
         </div>
 
-        <!-- Filtros de Categoría -->
+        <!-- Category Filters -->
         <div class="category-filters">
-            <button class="filter-btn active" data-category="all">Todos</button>
-            <button class="filter-btn" data-category="italiana">Linea Italiana</button>
-            <button class="filter-btn" data-category="pantalones">Pantalones</button>
-            <button class="filter-btn" data-category="vestidos">Vestidos</button>
-            <button class="filter-btn" data-category="remeras">Remeras</button>
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="italiana">Italian Collection</button>
+            <button class="filter-btn" data-category="pantalones">Trousers</button>
+            <button class="filter-btn" data-category="vestidos">Dresses</button>
+            <button class="filter-btn" data-category="remeras">Tops</button>
+            <button class="filter-btn" data-category="accesorios">Accessories</button>
         </div>
 
-        <!-- Secciones de Productos -->
+        <!-- Product Sections -->
         <section class="product-category" data-category="italiana">
-            <h2 class="category-title" data-category="italiana">Linea Italiana</h2>
+            <h2 class="category-title" data-category="italiana">Italian Collection</h2>
             <div class="product-grid">
                 <div data-id="6" class="product-card" data-category="italiana">
                     <div class="product-image-placeholder six-image"></div>
-                    <h3>Pantalon elastizado</h3>
+                    <h3>Stretch Trousers</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="2" class="product-card" data-category="italiana">
                     <div class="product-image-placeholder second-image"></div>
-                    <h3>Vestido animal print</h3>
+                    <h3>Animal Print Dress</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="7" class="product-card" data-category="italiana">
                     <div class="product-image-placeholder seven-image"></div>
-                    <h3>Pantalon</h3>
+                    <h3>Classic Trousers</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="8" class="product-card" data-category="italiana">
                     <div class="product-image-placeholder eight-image"></div>
-                    <h3>Pantalon de jeans </h3>
+                    <h3>Denim Jeans</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
             </div>
         </section>
-        
+
         <section class="product-category" data-category="pantalones">
-            <h2 class="category-title" data-category="pantalones">Pantalones</h2>
+            <h2 class="category-title" data-category="pantalones">Trousers</h2>
             <div class="product-grid">
                 <div data-id="1" class="product-card" data-category="pantalones">
                     <div class="product-image-placeholder first-image"></div>
-                    <h3>Pantalón jeans toro alto elastizado</h3>
+                    <h3>High-Waist Stretch Jeans</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="9" class="product-card" data-category="pantalones">
                     <div class="product-image-placeholder nine-image"></div>
-                    <h3>Pantalón de lino</h3>
+                    <h3>Linen Trousers</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="10" class="product-card" data-category="pantalones">
                     <div class="product-image-placeholder ten-image"></div>
-                    <h3>Pantalón de gabardina</h3>
+                    <h3>Gabardine Trousers</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div data-id="11" class="product-card" data-category="pantalones">
                     <div class="product-image-placeholder eleven-image"></div>
-                    <h3>Pantalón de algodon</h3>
+                    <h3>Cotton Trousers</h3>
                     <p class="price">$998</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
             </div>
         </section>
 
         <section class="product-category" data-category="vestidos">
-            <h2 class="category-title" data-category="vestidos">Vestidos</h2>
+            <h2 class="category-title" data-category="vestidos">Dresses</h2>
             <div class="product-grid">
                 <div class="product-card" data-id="2" data-category="vestidos">
                     <div class="product-image-placeholder second-image"></div>
-                    <h3>Vestido animal print</h3>
+                    <h3>Animal Print Dress</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="12" data-category="vestidos">
                     <div class="product-image-placeholder twelve-image"></div>
-                    <h3>Vestido prili con bordado</h3>
+                    <h3>Embroidered Prili Dress</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="13" data-category="vestidos">
                     <div class="product-image-placeholder thirdteen-image"></div>
-                    <h3>Vestido de algodon</h3>
+                    <h3>Cotton Dress</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="14" data-category="vestidos">
                     <div class="product-image-placeholder fourteen-image"></div>
-                    <h3>Vestido de algodon</h3>
+                    <h3>Summer Cotton Dress</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
             </div>
         </section>
-        
+
         <section class="product-category" data-category="remeras">
-            <h2 class="category-title" data-category="remeras">Remeras</h2>
+            <h2 class="category-title" data-category="remeras">Tops</h2>
             <div class="product-grid">
                 <div class="product-card" data-id="15" data-category="remeras">
                     <div class="product-image-placeholder fifteen-image"></div>
-                    <h3>Remera italiana</h3>
+                    <h3>Italian Top</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="16" data-category="remeras">
                     <div class="product-image-placeholder sixteen-image"></div>
-                    <h3>Remera de lino y algodón</h3>
+                    <h3>Linen & Cotton Tee</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="17" data-category="remeras">
                     <div class="product-image-placeholder seventeen-image"></div>
-                    <h3>Remera manga corta lino y algodón</h3>
+                    <h3>Short-Sleeve Linen & Cotton Tee</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="18" data-category="remeras">
                     <div class="product-image-placeholder eightteen-image"></div>
-                    <h3>Remera italiana</h3>
+                    <h3>Italian Long-Sleeve Top</h3>
                     <p class="price">$1.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
             </div>
         </section>
 
         <section class="product-category" data-category="accesorios">
-            <h2 class="category-title" data-category="accesorios">Accesorios</h2>
+            <h2 class="category-title" data-category="accesorios">Accessories</h2>
             <div class="product-grid">
                 <div class="product-card" data-id="4" data-category="accesorios">
                     <div class="product-image-placeholder fourth-image"></div>
-                    <h3>Cartera tipo baul</h3>
+                    <h3>Trunk-Style Handbag</h3>
                     <p class="price">$3.598</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="5" data-category="accesorios">
                     <div class="product-image-placeholder fifth-image"></div>
-                    <h3>Cartera</h3>
+                    <h3>Classic Handbag</h3>
                     <p class="price">$3.298</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="19" data-category="accesorios">
                     <div class="product-image-placeholder nineteen-image"></div>
-                    <h3>Cintos de cuero</h3>
+                    <h3>Leather Belts</h3>
                     <p class="price">$3.298</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
                 <div class="product-card" data-id="20" data-category="accesorios">
                     <div class="product-image-placeholder twenty-image"></div>
-                    <h3>Mini cartera</h3>
+                    <h3>Mini Purse</h3>
                     <p class="price">$3.298</p>
-                    <a href="#" class="add-to-cart"><span>Añadir al carrito</span></a>
+                    <a href="#" class="add-to-cart"><span>Add to cart</span></a>
                 </div>
             </div>
         </section>
@@ -203,25 +204,25 @@
     <footer id="contacto">
         <div class="footer-content">
             <div class="footer-section about">
-                <h3>Sobre nosotros</h3>
-                <p>Zamlnig es tu destino de moda contemporánea, ofreciendo las últimas tendencias con calidad excepcional.</p>
+                <h3>About us</h3>
+                <p>Velour & Co. is your contemporary fashion destination, offering the latest trends with exceptional quality.</p>
             </div>
             <div class="footer-section links">
-                <h3>Enlaces útiles</h3>
+                <h3>Useful links</h3>
                 <ul>
-                    <li><a href="#">Política de privacidad</a></li>
-                    <li><a href="#">Términos de servicio</a></li>
-                    <li><a href="#">Devoluciones y envíos</a></li>
+                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="#">Terms of service</a></li>
+                    <li><a href="#">Returns and shipping</a></li>
                 </ul>
             </div>
             <div class="footer-section contact">
-                <h3>Contáctanos</h3>
-                <p>Email: info@zamlnig.com</p>
-                <p>Teléfono: +123 456 7890</p>
+                <h3>Contact us</h3>
+                <p>Email: info@velour.co</p>
+                <p>Phone: +123 456 7890</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Zamlnig. Todos los derechos reservados.</p>
+            <p>&copy; 2025 Velour & Co. All rights reserved.</p>
         </div>
     </footer>
 
